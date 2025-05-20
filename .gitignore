@@ -1,0 +1,50 @@
+# 编译生成的文件
+*.o
+*.out
+*.obj
+*.exe
+*.dll
+*.so
+
+# 编译器生成的临时文件
+*.tmp
+*.tmp.*
+
+# 编译器的日志文件
+*.log
+
+# 编译器的配置文件
+*.config
+
+# 编译器的缓存文件
+*.cache
+
+# 编译器的中间文件
+*.i
+*.ii
+*.s
+*.sbr
+
+# 编译器的调试文件
+*.pdb
+
+# 编译器的依赖文件
+*.d
+
+# 编译器的输出目录
+bin/
+build/
+dist/
+
+# IDE 或编辑器生成的文件
+.vscode/
+*.vscode/
+*.vs/
+*.idea/
+*.sublime-workspace
+*.sublime-project
+
+# 其他临时文件
+*.tmp
+*.swp
+*.bak
