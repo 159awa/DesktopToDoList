@@ -40,4 +40,8 @@ void initBinarySearchTree(BinarySearchTree* bst);
 // 销毁二叉排序树
 void destroyBinarySearchTree(BinarySearchTree* bst);
 
+TreeNode* deleteNode(TreeNode* root, const char* value);
+
+TreeNode* findMin(TreeNode* node);
+
 #endif // dataDefine.h

@@ -88,3 +88,52 @@ void initBinarySearchTree(BinarySearchTree* bst) {
 void destroyBinarySearchTree(BinarySearchTree* bst) {
     freeTree(bst->root);
 }
+
+// 删除一个节点
+TreeNode* deleteNode(TreeNode* root, const char* value) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    // 如果要删除的节点在左子树
+    if (strcmp(value, root->value) < 0) {
+        root->left = deleteNode(root->left, value);
+    }
+    // 如果要删除的节点在右子树
+    else if (strcmp(value, root->value) > 0) {
+        root->right = deleteNode(root->right, value);
+    }
+    // 找到要删除的节点
+    else {
+        // 节点没有子节点
+        if (root->left == NULL && root->right == NULL) {
+            free(root);
+            return NULL;
+        }
+        // 节点有一个子节点
+        if (root->left == NULL) {
+            TreeNode* temp = root->right;
+            free(root);
+            return temp;
+        }
+        if (root->right == NULL) {
+            TreeNode* temp = root->left;
+            free(root);
+            return temp;
+        }
+        // 节点有两个子节点，找到右子树的最小节点替换
+        TreeNode* minNode = findMin(root->right);
+        strcpy(root->value, minNode->value);
+        root->importance = minNode->importance;
+        root->right = deleteNode(root->right, minNode->value);
+    }
+    return root;
+}
+
+// 找到最小节点
+TreeNode* findMin(TreeNode* node) {
+    while (node->left != NULL) {
+        node = node->left;
+    }
+    return node;
+}
