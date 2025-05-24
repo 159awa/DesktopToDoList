@@ -12,6 +12,9 @@ void deleteTodo(BinarySearchTree* bst, const char* value);
 // 查找待办事项
 TreeNode* findTodo(BinarySearchTree* bst, const char* value);
 
+// 通过关键词查找待办事项
+void findTodosByKeyword(BinarySearchTree* bst, const char* keyword, TreeNode*** result, int* count);
+void findTodosByKeywordHelper(TreeNode* root, const char* keyword, TreeNode*** result, int* count);
 
 void inorderSave(TreeNode* root, FILE* file);
 

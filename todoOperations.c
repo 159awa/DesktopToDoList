@@ -29,6 +29,31 @@ TreeNode* findTodo(BinarySearchTree* bst, const char* value) {
     return NULL;
 }
 
+// 通过关键词查找待办事项
+void findTodosByKeyword(BinarySearchTree* bst, const char* keyword, TreeNode*** result, int* count) {
+    *result = NULL;
+    *count = 0;
+    findTodosByKeywordHelper(bst->root, keyword, result, count);
+}
+
+// 辅助函数：递归查找所有匹配的节点
+void findTodosByKeywordHelper(TreeNode* root, const char* keyword, TreeNode*** result, int* count) {
+    if (root == NULL) {
+        return;
+    }
+
+    // 检查当前节点的值是否包含关键词
+    if (strstr(root->value, keyword) != NULL) {
+        *result = (TreeNode**)realloc(*result, (*count + 1) * sizeof(TreeNode*));
+        (*result)[*count] = root;
+        (*count)++;
+    }
+
+    // 递归查找左子树和右子树
+    findTodosByKeywordHelper(root->left, keyword, result, count);
+    findTodosByKeywordHelper(root->right, keyword, result, count);
+}
+
 // 中序遍历并保存到文件
 void inorderSave(TreeNode* root, FILE* file) {
     if (root != NULL) {
