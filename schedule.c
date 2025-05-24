@@ -1,5 +1,6 @@
 #include "todoOperations.h"
 #include "schedule.h"
+#include <time.h>
 
 // 计算平均权值
 float calcuAvg(BinarySearchTree* bst) {
@@ -59,24 +60,46 @@ void createSchedule(BinarySearchTree* bst) {
         return;
     }
 
-    // 从文件中随机挑选一些事项展示作为计划表
-    // 这里可以使用随机数生成和文件读取的方法来实现
-    // 例如，可以先读取所有事项到一个数组中，然后使用随机数索引数组
-    // 为了简化，这里只展示一个随机挑选的事项
-
+    // 读取所有事项到一个数组中
+    char** lines = NULL;
+    int linesCount = 0;
     char line[200];
-    int lines = 0;
     while (fgets(line, 200, file)) {
-        lines++;
+        linesCount++;
+        lines = (char**)realloc(lines, linesCount * sizeof(char*));
+        lines[linesCount - 1] = strdup(line);
     }
-    rewind(file);
-
-    int randomLine = rand() % lines;
-    for (int i = 0; i < randomLine; i++) {
-        fgets(line, 200, file);
-    }
-    fgets(line, 200, file);
-    printf("random item: %s", line);
-
     fclose(file);
+
+    // 初始化随机数生成器
+    srand(time(NULL));
+
+    // 打开一个新的文件用于输出计划表
+    FILE* scheduleFile = fopen("schedule.txt", "w");
+    if (scheduleFile == NULL) {
+        printf("无法打开文件 schedule.txt\n");
+        return;
+    }
+
+    // 随机挑选多个事项
+    int numItemsToPick = 3;  // 假设我们随机挑选3个事项
+    if (numItemsToPick > linesCount) {
+        numItemsToPick = linesCount;
+    }
+
+    for (int i = 0; i < numItemsToPick; i++) {
+        int randomIndex = rand() % linesCount;
+        printf("%s", lines[randomIndex]);
+        fprintf(scheduleFile, "%s", lines[randomIndex]);
+        free(lines[randomIndex]);  // 释放已使用的行
+        lines[randomIndex] = lines[linesCount - 1];  // 将最后一行移到随机位置
+        linesCount--;
+    }
+
+    // 释放剩余的内存
+    for (int i = 0; i < linesCount; i++) {
+        free(lines[i]);
+    }
+    free(lines);
+    fclose(scheduleFile);
 }

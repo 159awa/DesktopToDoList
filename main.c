@@ -67,6 +67,13 @@ int main() {
                 searchByFactors(&bst, avg, avg);
                 // 创建计划表
                 createSchedule(&bst);
+                while (1) {
+                    printf("结果还满意吗？输入no重新生成，输入其他字符退出：");
+                    scanf("%s", item);
+                    if (strcmp(item, "no") == 0) {
+                        createSchedule(&bst);
+                    } else break;
+                }
                 break;
         }
     }
