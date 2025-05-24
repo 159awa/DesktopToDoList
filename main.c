@@ -1,5 +1,6 @@
 #include "dataDefine.h"
 #include "todoOperations.h"
+#include "schedule.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,10 +28,20 @@ int main() {
     }
 
     // 修改已有待办事项
-    modifyTodo(&bst, "this is a new item", "this is a newwwwwwwwwww item", 7);
+    modifyTodo(&bst, "this is a new item", "this is a newwwwwwwwwww item", 2);
 
     // 保存到新文件
     saveTodos(&bst, "new_todo.txt");
+
+    // 计算平均权值
+    float avg = calcuAvg(&bst);
+    printf("avg: %f\n", avg);
+
+    // 根据权值范围搜索待办事项并存储到文件
+    searchByFactors(&bst, avg, avg);
+
+    // 创建计划表
+    createSchedule(&bst);
 
     // 销毁二叉排序树
     destroyBinarySearchTree(&bst);
