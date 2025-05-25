@@ -77,14 +77,5 @@ int main() {
                 break;
         }
     }
-
-    // // 查找待办事项
-    // TreeNode* found = findTodo(&bst, "this is a new item");
-    // if (found != NULL) {
-    //     printf("Found: Importance: %d, Value: %s\n", found->importance, found->value);
-    // } else {
-    //     printf("Not Found\n");
-    // }
-
     return 0;
 }
