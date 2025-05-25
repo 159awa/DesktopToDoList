@@ -14,7 +14,7 @@ void deleteTodo(BinarySearchTree* bst, const char* value) {
     bst->root = deleteNode(bst->root, value);
 }
 
-// 查找待办事项
+// 查找待办事项，这是一个完全匹配查找，遍历树，根据二叉排序树的特性，可以比较方便的找到。
 TreeNode* findTodo(BinarySearchTree* bst, const char* value) {
     TreeNode* current = bst->root;
     while (current != NULL) {
@@ -29,21 +29,24 @@ TreeNode* findTodo(BinarySearchTree* bst, const char* value) {
     return NULL;
 }
 
+// 但是对于待办事项清单，怎么会有人记忆的完全一样，所以这里显然需要一个关键词通配查找
 // 通过关键词查找待办事项
 void findTodosByKeyword(BinarySearchTree* bst, const char* keyword, TreeNode*** result, int* count) {
-    *result = NULL;
-    *count = 0;
+    *result = NULL; // 结果数组，作为一个容器传递进来，函数把找到的东西塞进去。
+    *count = 0; // 表示塞了几个进去
     findTodosByKeywordHelper(bst->root, keyword, result, count);
 }
 
 // 辅助函数：递归查找所有匹配的节点
 void findTodosByKeywordHelper(TreeNode* root, const char* keyword, TreeNode*** result, int* count) {
+    // 递归结束的条件，当前节点为空
     if (root == NULL) {
         return;
     }
 
-    // 检查当前节点的值是否包含关键词
+    // 用strstr检查当前节点的值是否包含关键词
     if (strstr(root->value, keyword) != NULL) {
+        // 有关键词就把这个结点存到结果数组里去（这里因为结果数组大小未知，所以重新分配一下内存）
         *result = (TreeNode**)realloc(*result, (*count + 1) * sizeof(TreeNode*));
         (*result)[*count] = root;
         (*count)++;
@@ -77,10 +80,10 @@ void saveTodos(BinarySearchTree* bst, const char* filename) {
 
 // 修改已有待办事项
 void modifyTodo(BinarySearchTree* bst, const char* old_value, const char* new_value, int new_importance) {
-    // 查找旧的待办事项
+    // 查找旧的待办事项，这里用完全匹配查找，总不能把含有关键词的都删掉了吧
     TreeNode* node = findTodo(bst, old_value);
     if (node == NULL) {
-        printf("item '%s' unfounded, cannot change\n", old_value);
+        printf("未找到事项 '%s' \n", old_value);
         return;
     }
 
@@ -88,5 +91,5 @@ void modifyTodo(BinarySearchTree* bst, const char* old_value, const char* new_va
     strcpy(node->value, new_value);
     node->importance = new_importance;
 
-    printf("item '%s' had been changed to '%s', the new weight is %d.\n", old_value, new_value, new_importance);
+    printf("事项 '%s' 已修改为 '%s'，新的权重是 %d。\n", old_value, new_value, new_importance);
 }
